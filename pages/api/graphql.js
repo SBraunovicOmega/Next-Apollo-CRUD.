@@ -1,16 +1,26 @@
 import { gql, ApolloServer } from "apollo-server-micro";
 import { PrismaClient } from "@prisma/client";
 
+
+// omogucava da mozemo da komuniciramo sa datebase-om
+// inicijalizacija 
 const prisma = new PrismaClient();
+
+
+// GraphQL schema, ovjde deklarisemo entite sa kojima cemo da radimo
+// Query je sa fetchovanje podataka, a mutacija je za mjenjanje podataka
 
 const typeDefs = gql`
   type BlogPost {
     id: String
     text: String
   }
+  
+
 
   type Query {
     blogPosts: [BlogPost]
+  
   }
 
   type Mutation {
@@ -22,6 +32,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
+    // po default-u graphQL proslijedjuje tri parametra
     blogPosts: (_parent, _args, _context) => {
       return prisma.blogPost.findMany();
     },
@@ -40,7 +51,11 @@ const resolvers = {
   },
 };
 
+// Inicijalizacija Apollo servera
+
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
+
+// Ce nam omoguciti da GraphQL server moze hendlati server
 
 const handler = apolloServer.createHandler({ path: "/api/graphql" });
 
