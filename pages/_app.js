@@ -1,6 +1,8 @@
 import "../styles/globals.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
+
+// Inicijalizacija Apollo Client-a
 const client = new ApolloClient({
   uri: "http://localhost:3000/api/graphql",
   cache: new InMemoryCache(),

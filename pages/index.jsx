@@ -1,10 +1,11 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation ,useQuery} from "@apollo/client";
 import {
   ADD_BLOGPOST,
   DELETE_BLOGPOST,
   EDIT_BLOGPOST,
+  GET_BLOGPOSTS
 } from "../graphql/queries";
 import BlogPosts from "../components/BlogPosts";
 import Container from "@material-ui/core/Container";
@@ -12,9 +13,10 @@ import SubmitBlogPostForm from "../components/SubmitBlogPostForm";
 import EditModal from "../components/EditModal";
 
 export default function Home() {
-  const [addBlogPost] = useMutation(ADD_BLOGPOST, {
+  const { refetch } = useQuery(GET_BLOGPOSTS);
+  const [addBlogPost, ] = useMutation(ADD_BLOGPOST, {
     onCompleted: (data) => {
-      window.location.reload();
+      refetch(GET_BLOGPOSTS)
     },
   });
 
@@ -25,7 +27,7 @@ export default function Home() {
 
   const [deleteBlogPost] = useMutation(DELETE_BLOGPOST, {
     onCompleted: (data) => {
-      window.location.reload();
+      refetch(GET_BLOGPOSTS)
     },
   });
 
